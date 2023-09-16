@@ -1,4 +1,4 @@
-<center> <h1>HBNB - The Console</h1> </center>
+<h1 align="center">HBNB - The Console</h1>
 
 <p align="center"> 
 <br>
@@ -11,7 +11,7 @@ This repository contains a clone version of AirBnB website, backend assits as co
 
 ---
 
-<center> <h3>Repository Contents by Project Task</h3> </center>
+<center> <h3 align="center">Repository Contents by Project Task</h3> </center>
 
 | Tasks | Files | Description |
 | ----- | ----- | ------ |
@@ -28,7 +28,7 @@ This repository contains a clone version of AirBnB website, backend assits as co
 | 10. Console 1.0 | [console.py](https://github.com/abdelemjidessaid/AirBnB_clone_v2/blob/master/console.py) [/models/engine/file_storage.py](https://github.com/abdelemjidessaid/AirBnB_clone_v2/blob/master/models/engine/file_storage.py) | Update the console and file storage system to work dynamically with all  classes update file storage |
 <br>
 <br>
-<center> <h2>General Use</h2> </center>
+<center> <h2 align="center">General Use</h2> </center>
 
 1. First clone this repository.
 
@@ -74,7 +74,7 @@ Advanced syntax is implemented for the following commands:
 
 <br>
 <br>
-<center> <h2>Examples</h2> </center>
+<center> <h2 align="center">Examples</h2> </center>
 <h3>Primary Command Syntax</h3>
 
 ###### Example 0: Create an object
