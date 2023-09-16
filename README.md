@@ -1,13 +1,13 @@
 <center> <h1>HBNB - The Console</h1> </center>
 
-<center> 
+<p align="center"> 
 <br>
 <br>
 This repository contains a clone version of AirBnB website, backend assits as console and database. 
 <br>
 <br>
 <br>
-</center>
+</p>
 
 ---
 
