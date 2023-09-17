@@ -1,6 +1,5 @@
 #!/usr/bin/python3
-"""
-This module is a unittest for console.py.
+"""A unit test module for the console (command interpreter).
 """
 import json
 import MySQLdb
@@ -18,14 +17,12 @@ from tests import clear_stream
 
 
 class TestHBNBCommand(unittest.TestCase):
-    """
-    Represents the test class for the HBNBCommand class.
+    """Represents the test class for the HBNBCommand class.
     """
     @unittest.skipIf(
         os.getenv('HBNB_TYPE_STORAGE') == 'db', 'FileStorage test')
     def test_fs_create(self):
-        """
-        Tests the create command of console.
+        """Tests the create command with the file storage.
         """
         with patch('sys.stdout', new=StringIO()) as cout:
             cons = HBNBCommand()
@@ -48,14 +45,14 @@ class TestHBNBCommand(unittest.TestCase):
     @unittest.skipIf(
         os.getenv('HBNB_TYPE_STORAGE') != 'db', 'DBStorage test')
     def test_db_create(self):
-        """
-        Tests the create command with the database storage.
+        """Tests the create command with the database storage.
         """
         with patch('sys.stdout', new=StringIO()) as cout:
             cons = HBNBCommand()
+            # creating a model with non-null attribute(s)
             with self.assertRaises(sqlalchemy.exc.OperationalError):
                 cons.onecmd('create User')
-
+            # creating a User instance
             clear_stream(cout)
             cons.onecmd('create User email="john25@gmail.com" password="123"')
             mdl_id = cout.getvalue().strip()
@@ -78,13 +75,12 @@ class TestHBNBCommand(unittest.TestCase):
     @unittest.skipIf(
         os.getenv('HBNB_TYPE_STORAGE') != 'db', 'DBStorage test')
     def test_db_show(self):
-        """
-        Tests the show command with the database storage.
+        """Tests the show command with the database storage.
         """
         with patch('sys.stdout', new=StringIO()) as cout:
             cons = HBNBCommand()
-
-            obj = User(email="essaid97@gmail.com", password="9797")
+            # showing a User instance
+            obj = User(email="john25@gmail.com", password="123")
             dbc = MySQLdb.connect(
                 host=os.getenv('HBNB_MYSQL_HOST'),
                 port=3306,
@@ -115,10 +111,10 @@ class TestHBNBCommand(unittest.TestCase):
             cons.onecmd('show User {}'.format(obj.id))
             result = cursor.fetchone()
             self.assertTrue(result is not None)
-            self.assertIn('essaid97@gmail.com', result)
-            self.assertIn('9797', result)
-            self.assertIn('essaid97@gmail.com', cout.getvalue())
-            self.assertIn('9797', cout.getvalue())
+            self.assertIn('john25@gmail.com', result)
+            self.assertIn('123', result)
+            self.assertIn('john25@gmail.com', cout.getvalue())
+            self.assertIn('123', cout.getvalue())
             cursor.close()
             dbc.close()
 
