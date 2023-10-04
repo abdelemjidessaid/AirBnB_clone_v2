@@ -1,48 +1,47 @@
 #!/usr/bin/env bash
-# sets up my web servers for the deployment of web_static
+# script that configs a server with multiple settings.
 
-echo -e "\e[1;32m START\e[0m"
+# update and install the nginx if not exists:
+sudo apt-get update
+sudo apt-get install nginx -y
+echo "installing nginx exits with status : $?"
 
-#--Updating the packages
-sudo apt-get -y update
-sudo apt-get -y install nginx
-echo -e "\e[1;32m Packages updated\e[0m"
-echo
-
-#--configure firewall
+# config the nginx firewall on HTTP:
 sudo ufw allow 'Nginx HTTP'
-echo -e "\e[1;32m Allow incomming NGINX HTTP connections\e[0m"
-echo
+echo "config firewall status : $?"
 
-#--created the dir
-sudo mkdir -p /data/web_static/releases/test /data/web_static/shared
-echo -e "\e[1;32m directories created"
-echo
+# create specific directories:
+sudo mkdir -p /data/web_static/releases/test
+echo "creating /data/web_static/releases/test status : $?"
+sudo mkdir -p /data/web_static/shared
+echo "creating /data/web_static/shared status : $?"
 
-#--adds test string
-echo "<h1>Welcome to www.uniqueel.tech</h1>" > /data/web_static/releases/test/index.html
-echo -e "\e[1;32m Test string added\e[0m"
-echo
+# create HTML file named index.html:
+echo "Simple content :)." | sudo tee "/data/web_static/releases/test/index.html"
+echo "creating the HTML file status : $?"
 
-#--prevent overwrite
-if [ -d "/data/web_static/current" ];
-then
-    echo "path /data/web_static/current exists"
-    sudo rm -rf /data/web_static/current;
-fi;
-echo -e "\e[1;32m prevent overwrite\e[0m"
-echo
+# remove the existing symbolic link if it exists:
+if [ -L /data/web_static/current ]; then
+    sudo rm -rf /data/web_static/current
+    echo "removing symbolic link status : $?"
+fi
 
-#--create symbolic link
+# create the symbolic link:
 sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
-sudo chown -hR ubuntu:ubuntu /data
+echo "creating the symbolic link status : $?"
 
-sudo sed -i '38i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' /etc/nginx/sites-available/default
+# change the ownership permissions:
+sudo chown -R ubuntu:ubuntu /data/
 
+# update the Nginx configuration to serve the content:
+config="\n\tlocation \/hbnb_static\/ {\n\t\talias \/data\/web_static\/current\/;\n\t}"
+sudo sed -i "/server_name _;/a\\$config\n" /etc/nginx/sites-available/default
+echo "configuration status : $?"
+
+# link the next files:
 sudo ln -sf '/etc/nginx/sites-available/default' '/etc/nginx/sites-enabled/default'
-echo -e "\e[1;32m Symbolic link created\e[0m"
-echo
+echo "link the default files status : $?"
 
-#--restart NGINX
+# restart the nginx:
 sudo service nginx restart
-echo -e "\e[1;32m restart NGINX\e[0m"
+echo "restarting the nginx : $?"
