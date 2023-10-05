@@ -33,22 +33,22 @@ def do_deploy(archive_path):
     """
         Function that distributes an archive to your web servers
     """
-    if (os.path.exists(archive_path)):
+    if os.path.exists(archive_path):
         archived_file = archive_path[9:]
-        latest_version = '/data/web_static/releases/' + archived_file[:-4]
-        archived_file = '/tmp/' + archived_file
-        # upload new release to servers
-        put(archived_file, '/tmp/')
-        run('sudo mkdir -p {}'.format(latest_version))
-        run('sudo tar -xzf {} -C {}/'
-            .format(archived_file, latest_version))
-        run('sudo rm {}'.format(archived_file))
-        run('sudo mv {}/web_static/* {}'
-            .format(latest_version, latest_version))
-        run('sudo rm -rf {}/web_static'.format(latest_version))
-        run('rm -rf /data/web_static/current')
-        run('sudo ln -s {} /data/web_static/current'
-            .format(latest_version))
-        print('New version deployed!')
+        newest_version = "/data/web_static/releases/" + archived_file[:-4]
+        archived_file = "/tmp/" + archived_file
+        put(archive_path, "/tmp/")
+        run("sudo mkdir -p {}".format(newest_version))
+        run("sudo tar -xzf {} -C {}/".format(archived_file,
+                                             newest_version))
+        run("sudo rm {}".format(archived_file))
+        run("sudo mv {}/web_static/* {}".format(newest_version,
+                                                newest_version))
+        run("sudo rm -rf {}/web_static".format(newest_version))
+        run("sudo rm -rf /data/web_static/current")
+        run("sudo ln -s {} /data/web_static/current".format(newest_version))
+
+        print("New version deployed!")
         return True
+
     return False
