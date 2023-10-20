@@ -17,7 +17,8 @@ def get_cities_by_states():
         all states and ites cities ordered.
     """
     states = storage.all(State)
-    return render_template('8-cities_by_states.py', states=states)
+    sorted_states = sorted(states.values(), key=lambda state: state.name)
+    return render_template('8-cities_by_states.py', states=sorted_states)
 
 
 @app.teardown_appcontext
