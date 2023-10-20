@@ -17,8 +17,8 @@ def list_states():
         and returns it as HTML file that dispalys it very well.
     """
     all_states = storage.all(State)
-    states = sorted(states.values(), key=lambda state: state.name)
-    return render_template('7-states_list.html', states=states)
+    sorted_states = sorted(all_states.values(), key=lambda state: state.name)
+    return render_template('7-states_list.html', states=sorted_states)
 
 
 if __name__ == '__main__':
