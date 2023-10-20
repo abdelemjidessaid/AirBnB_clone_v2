@@ -1,30 +1,29 @@
 #!/usr/bin/python3
 """
-    this module contains a script that starts Flask app
-    and loads all cities and states.
+    module contains a function that returns all states and its
+    states from database, in an HTML file.
 """
 
-from flask import Flask, render_template
 from models import storage
 from models.state import State
+from flask import Flask, render_template
 app = Flask(__name__)
 
 
 @app.route('/cities_by_states')
-def get_cities_by_states():
+def states_list():
     """
-        get_cities_by_states function that renders an HTML file contains
-        all states and ites cities ordered.
+        states_list function that renders an HTML file contains
+        all states with its cities.
     """
     states = storage.all(State)
-    return render_template('8-cities_by_states.py', states=states)
+    return render_template('8-cities_by_states.html', states=states)
 
 
 @app.teardown_appcontext
 def app_teardown(arg=None):
     """
-        app_teardown function that cleans up the app, and closes the
-        session of SQLAlchemy.
+        function that cleans up the SQLAlchemy's session.
     """
     storage.close()
 
